@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layPage快速使用</title>
+    <link rel="stylesheet" th:href="@{/libs/layui/css/layui.css}"/>
+</head>
+<body>
+
+<!--<div id="test1"></div>-->
+
+<script th:src="@{/libs/layui/layui.js}"></script>
+//第一步：编写模版。你可以使用一个script标签存放模板，如：
+<script id="demo" type="text/html">
+    <h3>{{ d.title }}</h3>
+    <ul>
+        {{#  layui.each(d.list, function(index, item){ }}
+        <li>
+            <span>{{ item.modname }}</span>
+            <span>{{ item.alias }}：</span>
+            <span>{{ item.site || '' }}</span>
+        </li>
+        {{#  }); }}
+        {{#  if(d.list.length === 0){ }}
+        无数据
+        {{#  } }}
+    </ul>
+    <ul>
+        {{#
+        var fn = function(){
+        return '2017-08-18';
+        };
+        }}
+        {{#  if(true){ }}
+        开始日期：{{ fn() }}
+        {{#  } else { }}
+        已截止
+        {{#  } }}
+    </ul>
+</script>
+//第二步：建立视图。用于呈现渲染结果。
+<div id="view"></div>
+<div> {{! 这里面的模板不会被解析  !}}</div>
+<script>
+    //第三步：渲染模版
+    //JavaScript代码区域
+    layui.use('laytpl', function(){
+        var laytpl = layui.laytpl;
+        var data = { //数据
+            "title":"Layui常用模块"
+            ,"list":[{"modname":"弹层","alias":"layer","site":"layer.layui.com"},{"modname":"表单","alias":"form"}]
+        }
+        var getTpl = demo.innerHTML
+            ,view = document.getElementById('view');
+        laytpl(getTpl).render(data, function(html){
+            view.innerHTML = html;
+        });
+    });
+</script>
+</body>
+</html>

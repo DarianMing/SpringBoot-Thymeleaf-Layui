@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layPage快速使用</title>
+    <link rel="stylesheet" th:href="@{/libs/layui/css/layui.css}"/>
+</head>
+<body>
+
+<div id="test1"></div>
+
+<script th:src="@{/libs/layui/layui.js}"></script>
+<script>
+    layui.use(['laypage','laytpl'], function(){
+        var laypage = layui.laypage;
+        //执行一个laypage实例
+        laypage.render({
+                           // elem: 'test1', //注意，这里的 test1 是 ID，不用加 # 号
+                           // count: 50, //数据总数，从服务端得到
+                           // limit: 10,
+                           // limits: [10,20,50,999]
+                           elem: 'test1'
+                           ,count: 70 //数据总数，从服务端得到
+                           ,jump: function(obj, first){
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                console.log(obj.limit); //得到每页显示的条数
+
+                //首次不执行
+                if(!first){
+                    //do something
+                }
+            }
+                       });
+
+        var laytpl = layui.laytpl;
+
+        //直接解析字符
+        laytpl('{{ d.name }}是一位公猿').render({
+                                               name: '贤心'
+                                           }, function(string){
+            console.log(string); //贤心是一位公猿
+        });
+
+        //你也可以采用下述同步写法，将 render 方法的回调函数剔除，可直接返回渲染好的字符
+        var string =  laytpl('{{ d.name }}是一位公猿').render({
+                                                             name: '贤心'
+                                                         });
+        console.log(string);  //贤心是一位公猿
+
+        //如果模板较大，你也可以采用数据的写法，这样会比较直观一些
+        laytpl([
+                   '{{ d.name }}是一位公猿'
+                   ,'其它字符 {{ d.content }}  其它字符'
+               ].join(''))
+
+        laytpl.config({
+                          open: '<%',
+                          close: '%>'
+                      });
+
+        //分割符将必须采用上述定义的
+        laytpl([
+                   '<%# var type = "公"; %>' //JS 表达式
+                   ,'<% d.name %>是一位<% type %>猿。'
+               ].join('')).render({
+                                      name: '贤心'
+                                  }, function(string){
+            console.log(string); //贤心是一位公猿
+        });
+    });
+
+</script>
+</body>
+</html>
