@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: SpringBoot-Thymeleaf-Layui
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/li?characterEncoding=UTF-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: 245220
+      initial-size: 1
+      min-idle: 3
+      max-wait: 60000
+      filters: stat,wall,slf4j
+
+mybatis:
+  type-aliases-package: com.lm.demo.model.DepartmentEntity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: false
+  support-methods-arguments: true
+  params: count=countSql
+
+logging:
+  level:
+    com.lm.demo.mapper : debug
